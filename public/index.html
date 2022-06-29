@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <h1>firebase example</h1>
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.8.4/firebase-app.js';
+    import {getAuth,connectAuthEmulator, signInAnonymously } from 'https://www.gstatic.com/firebasejs/9.8.4/firebase-auth.js';
+    import { getFunctions, connectFunctionsEmulator, httpsCallable } from 'https://www.gstatic.com/firebasejs/9.8.4/firebase-functions.js';
+    initializeApp({
+      projectId: 'demo-project1',
+      apiKey: 'dummy',
+    });
+    document.addEventListener('DOMContentLoaded', async function () {
+      const auth = getAuth();
+      connectAuthEmulator(auth, "http://localhost:9099");
+      const functions = getFunctions();
+      connectFunctionsEmulator(functions, "localhost", 6001);
+      auth.onAuthStateChanged(user => {
+        console.log("USER CHANGED TO ", user);
+        if (user) {
+          callFunction();
+        }
+      });
+      await signInAnonymously(auth);
+    });
+
+    async function callFunction() {
+      const functions = getFunctions();
+      const helloWorld = httpsCallable(functions, 'helloWorld');
+      let result = await helloWorld({ text: "hello" });
+      console.log(result.data);
+    };
+  </script>
+</body>
+
+</html>

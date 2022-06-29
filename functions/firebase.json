@@ -1,0 +1,17 @@
+{
+  "emulators": {
+    "functions": {
+      "port": 6001
+    },
+    "auth": {
+      "port": 9099
+    },
+    "ui": {
+      "enabled": true
+    }
+  },
+  "functions": {
+    "source": ".",
+    "runtime": "nodejs16"
+  }
+}
